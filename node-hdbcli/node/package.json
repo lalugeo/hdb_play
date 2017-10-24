@@ -1,0 +1,19 @@
+{
+  "author": "SAP ",
+  "name": "@sap/hana-client",
+  "description": "HANA JavaScript Driver.",
+  "version": "2.2.26",
+  "repository": {
+    "url": "https://github.com/hana/node-hana"
+  },
+  "dependencies": {
+    "debug": "2.6.3"
+  },
+  "main": "./lib/index",
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "scripts": {
+    "install": "node build.js"
+  }
+}
