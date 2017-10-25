@@ -152,6 +152,8 @@ int main(int argc,char *argv[])
 	int i=0;
 	clock_t start, end;
 	double cpu_time_used;
+	double *irr;
+	irr=calloc(1,sizeof(double));
 	start = clock();
 	//SQLBindCol(V_OD_hstmt,0,SQL_DOUBLE,&output,0,&d_len);
     	while(V_OD_erg != SQL_NO_DATA)
@@ -160,7 +162,8 @@ int main(int argc,char *argv[])
 		i++;
      		V_OD_erg=SQLFetch(V_OD_hstmt); 
      		//printf("Result: %f  --> %s\n",output,&outputa);
-		 
+	 	irr=realloc(irr,(i+1)*sizeof(double));
+		*(irr+i)=GetIrr(p);
     	};
 	end = clock();
 	cpu_time_used=((double) (end - start)) / CLOCKS_PER_SEC;
