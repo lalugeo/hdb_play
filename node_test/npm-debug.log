@@ -1,0 +1,442 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/hana/shared/LT1/xs/node_4/bin/node',
+1 verbose cli   '/hana/shared/LT1/xs/node_4/lib/node_modules/npm/bin/npm-cli.js',
+1 verbose cli   'instal',
+1 verbose cli   '/hana/shared/LT1/hdbclient/node/' ]
+2 info using npm@2.15.11
+3 info using node@v4.8.4
+4 verbose install initial load of /usr/local/lg/node_test/package.json
+5 warn package.json node_test@1.0.0 No description
+6 warn package.json node_test@1.0.0 No repository field.
+7 warn package.json node_test@1.0.0 No README data
+8 verbose installManyTop reading scoped package data from /usr/local/lg/node_test/node_modules/@sap/hana-client/package.json
+9 verbose readDependencies loading dependencies from /usr/local/lg/node_test/package.json
+10 silly cache add args [ '/hana/shared/LT1/hdbclient/node/', null ]
+11 verbose cache add spec /hana/shared/LT1/hdbclient/node/
+12 silly cache add parsed spec Result {
+12 silly cache add   raw: '/hana/shared/LT1/hdbclient/node/',
+12 silly cache add   scope: null,
+12 silly cache add   name: null,
+12 silly cache add   rawSpec: '/hana/shared/LT1/hdbclient/node/',
+12 silly cache add   spec: '/hana/shared/LT1/hdbclient/node',
+12 silly cache add   type: 'directory' }
+13 verbose addLocalDirectory /root/.npm/@sap/hana-client/2.2.26/package.tgz not in flight; packing
+14 verbose correctMkdir /root/.npm correctMkdir not in flight; initializing
+15 verbose tar pack [ '/root/.npm/@sap/hana-client/2.2.26/package.tgz',
+15 verbose tar pack   '/hana/shared/LT1/hdbclient/node' ]
+16 verbose tarball /root/.npm/@sap/hana-client/2.2.26/package.tgz
+17 verbose folder /hana/shared/LT1/hdbclient/node
+18 info prepublish @sap/hana-client@2.2.26
+19 verbose addLocalTarball adding from inside cache /root/.npm/@sap/hana-client/2.2.26/package.tgz
+20 verbose correctMkdir /root/.npm correctMkdir not in flight; initializing
+21 silly cache afterAdd @sap/hana-client@2.2.26
+22 verbose afterAdd /root/.npm/@sap/hana-client/2.2.26/package/package.json not in flight; writing
+23 verbose correctMkdir /root/.npm correctMkdir not in flight; initializing
+24 verbose afterAdd /root/.npm/@sap/hana-client/2.2.26/package/package.json written
+25 silly install resolved [ { author: { name: 'SAP' },
+25 silly install resolved     name: '@sap/hana-client',
+25 silly install resolved     description: 'HANA JavaScript Driver.',
+25 silly install resolved     version: '2.2.26',
+25 silly install resolved     repository: { url: 'git+https://github.com/hana/node-hana.git' },
+25 silly install resolved     dependencies: { debug: '2.6.3' },
+25 silly install resolved     main: './lib/index',
+25 silly install resolved     engines: { node: '>=4.0.0' },
+25 silly install resolved     scripts: { install: 'node build.js' },
+25 silly install resolved     readme: '#@sap/hana-client\nThis is a Node.js driver written for [SAP HANA](http://go.sap.com/product/technology-platform/hana.html).\n\n##Install\n```\nnpm install @sap/hana-client\n```\n####Prerequisites\n\nThis driver communicates with the native HANA libraries, and thus requires\nplatform-specific native binaries. Native compilation is managed by\n[`node-gyp`](https://github.com/TooTallNate/node-gyp/). Please see that project\nfor additional prerequisites including Python 2.7, and C/C++ tool chain.\n\nThe official hosted version includes precompiled libraries for Linux, Windows and Mac OS X.\n\nThe @sap/hana-client driver supports node.js 4.x and 6.x.\n\n##Getting Started\n```js\nvar hana = require(\'@sap/hana-client\');\n\nvar conn = hana.createConnection();\n\nvar conn_params = {\n  serverNode  : \'myserver:30015\',\n  uid         : \'system\',\n  pwd         : \'manager\'\n};\n\nconn.connect(conn_params, function(err) {\n  if (err) throw err;\n  conn.exec(\'SELECT Name, Description FROM Products WHERE id = ?\', [301], function (err, result) {\n    if (err) throw err;\n\n    console.log(\'Name: \', result[0].Name, \', Description: \', result[0].Description);\n    // output --> Name: Tee Shirt, Description: V-neck\n    conn.disconnect();\n  })\n});\n```\n\n##Establish a database connection\n###Connecting\nA database connection object is created by calling `createConnection`.  The\nconnection is established by calling the connection object\'s `connect` method,\nand passing in an object representing connection parameters.\n\n#####Example: Connecting over TCP/IP\n```js\nconn.connect({\n  host    : \'myserver\',\n  port    : \'30015\',\n  uid     : \'system\',\n  pwd     : \'manager\'\n});\n```\n\n###Disconnecting\n\n```js\nconn.disconnect(function(err) {\n  if (err) throw err;\n  console.log(\'Disconnected\');\n});\n```\n##Direct Statement Execution\nDirect statement execution is the simplest way to execute SQL statements. The\ninputs are the SQL command to be executed, and an optional array of positional\narguments. The result is returned using callbacks. The type of returned result\ndepends on the kind of statement.\n\n####DDL Statement\n\nIn the case of a successful DDL Statement nothing is returned.\n\n```js\nconn.exec(\'CREATE TABLE Test (id INTEGER PRIMARY KEY, msg VARCHAR(128))\', function (err, result) {\n  if (err) throw err;\n  console.log(\'Table Test created!\');\n});\n```\n\n####DML Statement\n\nIn the case of a DML Statement the number of `affectedRows` is returned.\n\n```js\nconn.exec("INSERT INTO Test VALUES(1, \'Hello\')", function (err, affectedRows) {\n  if (err) throw err;\n  console.log(\'Number of affected rows:\', affectedRows);\n});\n```\n\n####Query\n\nThe `exec` function is a convenient way to completely retrieve the result of a\nquery. In this case all selected rows are fetched and returned in the callback.\n\n```js\nconn.exec("SELECT * FROM Test WHERE id < 5", function (err, rows) {\n  if (err) throw err;\n  console.log(\'Rows:\', rows);\n});\n```\n\nValues in the query can be substitued with JavaScript variables by using `?`\nplaceholders in the query, and passing an array of positional arguments.\n\n```js\nconn.exec("SELECT * FROM Test WHERE id BETWEEN ? AND ?", [5, 8], function (err, rows) {\n  if (err) throw err;\n  console.log(\'Rows:\', rows);\n});\n```\n\n##Prepared Statement Execution\n####Prepare a Statement\nThe connection returns a `statement` object which can be executed multiple times.\n```js\nconn.prepare(\'SELECT * FROM Test WHERE id = ?\', function (err, stmt){\n  if (err) throw err;\n  // do something with the statement\n});\n```\n\n####Execute a Statement\nThe execution of a prepared statement is similar to the direct statement execution.\nThe first parameter of `exec` function is an array with positional parameters.\n```js\nstmt.exec([16], function(err, rows) {\n  if (err) throw err;\n  console.log("Rows: ", rows);\n});\n```\n\n####Execute a Batch Statement\nThe execution of a prepared batch statement is similar to the direct statement execution.\nThe first parameter of `execBatch` function is an array with positional parameters.\n```js\nvar stmt=conn.prepare("INSERT INTO Customers(ID, NAME) VALUES(?, ?)");\nstmt.execBatch([[1, \'Company 1\'], [2, \'Company 2\']], function(err, rows) {\n  if (err) throw err;\n  console.log("Rows: ", rows);\n});\n```\n\n####Execute a Query\nThe execution of a prepared query is similar to the direct statement execution.\nThe first parameter of `execQuery` function is an array with positional parameters.\n```js\nvar stmt=conn.prepare("SELECT * FROM Customers WHERE ID >= ? AND ID < ?");\nstmt.execQuery([100, 200], function(err, rs) {\n  if (err) throw err;\n    var rows = [];\n    while (rs.next()) {\n\trows.push(rs.getValues());\n    }\n  console.log("Rows: ", rows);\n});\n```\n\n####Drop Statement\n```js\nstmt.drop(function(err) {\n  if (err) throw err;\n});\n```\n\n##Transaction Handling\n__Transactions are automatically commited.__ Setting autocommit to false implicitly\nstarts a new transaction that must be explicitly committed, or rolled back.\n\n####Commit a Transaction\n\n```js\nconn.setAutoCommit(false);\n// Execute some statements\nconn.commit(function(err) {\n  if (err) throw err;\n  console.log(\'Transaction commited.\');\n});\n```\n\n####Rollback a Transaction\n```js\nconn.setAutoCommit(false);\n// Execute some statements\nconn.rollback(function(err) {\n  if (err) throw err;\n  console.log(\'Transaction rolled back.\');\n});\n```\n\n##Resources\n+ [SAP HANA Documentation](http://help.sap.com/hana)\n+ [SAP HANA Forum](http://saphanatutorial.com/forum/)\n+ [SAP HANA Community](https://go.sap.com/community/topic/hana.html)\n',
+25 silly install resolved     readmeFilename: 'README.md',
+25 silly install resolved     bugs: { url: 'https://github.com/hana/node-hana/issues' },
+25 silly install resolved     homepage: 'https://github.com/hana/node-hana#readme',
+25 silly install resolved     _id: '@sap/hana-client@2.2.26',
+25 silly install resolved     _shasum: '227b7624868188d2d9aa5668e719c797432bd88c',
+25 silly install resolved     _from: '../../../../hana/shared/LT1/hdbclient/node',
+25 silly install resolved     _resolved: 'file:../../../../hana/shared/LT1/hdbclient/node' } ]
+26 info install @sap/hana-client@2.2.26 into /usr/local/lg/node_test
+27 info installOne @sap/hana-client@2.2.26
+28 verbose installOne of @sap/hana-client to /usr/local/lg/node_test not in flight; installing
+29 verbose correctMkdir /root/.npm/_locks correctMkdir not in flight; initializing
+30 verbose lock using /root/.npm/_locks/sap-hana-client-1563e22f9ea7129d.lock for /usr/local/lg/node_test/node_modules/@sap/hana-client
+31 silly install write writing @sap/hana-client 2.2.26 to /usr/local/lg/node_test/node_modules/@sap/hana-client
+32 verbose unbuild node_modules/@sap/hana-client
+33 silly gentlyRm /usr/local/lg/node_test/node_modules/@sap/hana-client is being purged from base /usr/local/lg/node_test
+34 verbose gentlyRm don't care about contents; nuking /usr/local/lg/node_test/node_modules/@sap/hana-client
+35 silly vacuum-fs purging /usr/local/lg/node_test/node_modules/@sap/hana-client
+36 silly vacuum-fs removing /usr/local/lg/node_test/node_modules/@sap
+37 silly vacuum-fs removing /usr/local/lg/node_test/node_modules
+38 silly vacuum-fs finished vacuuming up to /usr/local/lg/node_test
+39 verbose tar unpack /root/.npm/@sap/hana-client/2.2.26/package.tgz
+40 verbose tar unpacking to /usr/local/lg/node_test/node_modules/@sap/hana-client
+41 silly gentlyRm /usr/local/lg/node_test/node_modules/@sap/hana-client is being purged
+42 verbose gentlyRm don't care about contents; nuking /usr/local/lg/node_test/node_modules/@sap/hana-client
+43 silly gunzTarPerm modes [ '755', '644' ]
+44 silly gunzTarPerm extractEntry package.json
+45 silly gunzTarPerm extractEntry README.md
+46 silly gunzTarPerm extractEntry build.js
+47 silly gunzTarPerm extractEntry binding.gyp
+48 silly gunzTarPerm extractEntry examples/app1.js
+49 silly gunzTarPerm extractEntry examples/app2.js
+50 silly gunzTarPerm extractEntry examples/readme.txt
+51 silly gunzTarPerm extractEntry extension/Enums.js
+52 silly gunzTarPerm extractEntry extension/FunctionCode.js
+53 silly gunzTarPerm extractEntry extension/Stream.js
+54 silly gunzTarPerm extractEntry extension/TypeCode.js
+55 silly gunzTarPerm extractEntry lib/index.js
+56 silly gunzTarPerm extractEntry src/DBCAPI_DLL.cpp
+57 silly gunzTarPerm extractEntry src/connection.cpp
+58 silly gunzTarPerm extractEntry src/h/DBCAPI.h
+59 silly gunzTarPerm extractEntry src/h/DBCAPI_DLL.h
+60 silly gunzTarPerm extractEntry src/h/connection.h
+61 silly gunzTarPerm extractEntry src/h/errors.h
+62 silly gunzTarPerm extractEntry src/h/hana_utils.h
+63 silly gunzTarPerm extractEntry src/h/nodever_cover.h
+64 silly gunzTarPerm extractEntry src/h/resultset.h
+65 silly gunzTarPerm extractEntry src/h/stmt.h
+66 silly gunzTarPerm extractEntry src/hana.cpp
+67 silly gunzTarPerm extractEntry src/resultset.cpp
+68 silly gunzTarPerm extractEntry src/statement.cpp
+69 silly gunzTarPerm extractEntry src/utils.cpp
+70 verbose write writing to /usr/local/lg/node_test/node_modules/@sap/hana-client/package.json
+71 info preinstall @sap/hana-client@2.2.26
+72 verbose readDependencies loading dependencies from /usr/local/lg/node_test/node_modules/@sap/hana-client/package.json
+73 silly prepareForInstallMany adding debug@2.6.3 from @sap/hana-client dependencies
+74 verbose readDependencies loading dependencies from /usr/local/lg/node_test/node_modules/@sap/hana-client/package.json
+75 silly cache add args [ 'debug@2.6.3', null ]
+76 verbose cache add spec debug@2.6.3
+77 silly cache add parsed spec Result {
+77 silly cache add   raw: 'debug@2.6.3',
+77 silly cache add   scope: null,
+77 silly cache add   name: 'debug',
+77 silly cache add   rawSpec: '2.6.3',
+77 silly cache add   spec: '2.6.3',
+77 silly cache add   type: 'version' }
+78 silly addNamed debug@2.6.3
+79 verbose addNamed "2.6.3" is a plain semver version for debug
+80 silly mapToRegistry name debug
+81 silly mapToRegistry using default registry
+82 silly mapToRegistry registry https://registry.npmjs.org/
+83 silly mapToRegistry data Result {
+83 silly mapToRegistry   raw: 'debug',
+83 silly mapToRegistry   scope: null,
+83 silly mapToRegistry   name: 'debug',
+83 silly mapToRegistry   rawSpec: '',
+83 silly mapToRegistry   spec: 'latest',
+83 silly mapToRegistry   type: 'tag' }
+84 silly mapToRegistry uri https://registry.npmjs.org/debug
+85 verbose addNameVersion registry:https://registry.npmjs.org/debug not in flight; fetching
+86 verbose request uri https://registry.npmjs.org/debug
+87 verbose request no auth needed
+88 info attempt registry request try #1 at 3:05:59 PM
+89 verbose request id 3ea79d20e15f04c3
+90 verbose etag W/"59ef3728-18f27"
+91 verbose lastModified Tue, 24 Oct 2017 12:50:48 GMT
+92 http request GET https://registry.npmjs.org/debug
+93 http 304 https://registry.npmjs.org/debug
+94 verbose headers { date: 'Tue, 24 Oct 2017 15:05:59 GMT',
+94 verbose headers   via: '1.1 varnish',
+94 verbose headers   'cache-control': 'max-age=300',
+94 verbose headers   etag: 'W/"59ef3728-18f27"',
+94 verbose headers   age: '2',
+94 verbose headers   connection: 'keep-alive',
+94 verbose headers   'x-served-by': 'cache-iad2641-IAD',
+94 verbose headers   'x-cache': 'HIT',
+94 verbose headers   'x-cache-hits': '3',
+94 verbose headers   'x-timer': 'S1508857560.948422,VS0,VE0',
+94 verbose headers   vary: 'Accept-Encoding, Accept' }
+95 silly get cb [ 304,
+95 silly get   { date: 'Tue, 24 Oct 2017 15:05:59 GMT',
+95 silly get     via: '1.1 varnish',
+95 silly get     'cache-control': 'max-age=300',
+95 silly get     etag: 'W/"59ef3728-18f27"',
+95 silly get     age: '2',
+95 silly get     connection: 'keep-alive',
+95 silly get     'x-served-by': 'cache-iad2641-IAD',
+95 silly get     'x-cache': 'HIT',
+95 silly get     'x-cache-hits': '3',
+95 silly get     'x-timer': 'S1508857560.948422,VS0,VE0',
+95 silly get     vary: 'Accept-Encoding, Accept' } ]
+96 verbose etag https://registry.npmjs.org/debug from cache
+97 verbose get saving debug to /root/.npm/registry.npmjs.org/debug/.cache.json
+98 verbose correctMkdir /root/.npm correctMkdir not in flight; initializing
+99 silly cache afterAdd debug@2.6.3
+100 verbose afterAdd /root/.npm/debug/2.6.3/package/package.json not in flight; writing
+101 verbose correctMkdir /root/.npm correctMkdir not in flight; initializing
+102 verbose afterAdd /root/.npm/debug/2.6.3/package/package.json written
+103 silly install resolved [ { name: 'debug',
+103 silly install resolved     version: '2.6.3',
+103 silly install resolved     repository: { type: 'git', url: 'git://github.com/visionmedia/debug.git' },
+103 silly install resolved     description: 'small debugging utility',
+103 silly install resolved     keywords: [ 'debug', 'log', 'debugger' ],
+103 silly install resolved     author: { name: 'TJ Holowaychuk', email: 'tj@vision-media.ca' },
+103 silly install resolved     contributors: [ [Object], [Object] ],
+103 silly install resolved     license: 'MIT',
+103 silly install resolved     dependencies: { ms: '0.7.2' },
+103 silly install resolved     devDependencies:
+103 silly install resolved      { browserify: '9.0.3',
+103 silly install resolved        chai: '^3.5.0',
+103 silly install resolved        concurrently: '^3.1.0',
+103 silly install resolved        coveralls: '^2.11.15',
+103 silly install resolved        eslint: '^3.12.1',
+103 silly install resolved        istanbul: '^0.4.5',
+103 silly install resolved        karma: '^1.3.0',
+103 silly install resolved        'karma-chai': '^0.1.0',
+103 silly install resolved        'karma-mocha': '^1.3.0',
+103 silly install resolved        'karma-phantomjs-launcher': '^1.0.2',
+103 silly install resolved        'karma-sinon': '^1.0.5',
+103 silly install resolved        mocha: '^3.2.0',
+103 silly install resolved        'mocha-lcov-reporter': '^1.2.0',
+103 silly install resolved        rimraf: '^2.5.4',
+103 silly install resolved        sinon: '^1.17.6',
+103 silly install resolved        'sinon-chai': '^2.8.0' },
+103 silly install resolved     main: './src/index.js',
+103 silly install resolved     browser: './src/browser.js',
+103 silly install resolved     component: { scripts: [Object] },
+103 silly install resolved     gitHead: '9dc30f8378cc12192635cc6a31f0d96bb39be8bb',
+103 silly install resolved     bugs: { url: 'https://github.com/visionmedia/debug/issues' },
+103 silly install resolved     homepage: 'https://github.com/visionmedia/debug#readme',
+103 silly install resolved     _id: 'debug@2.6.3',
+103 silly install resolved     scripts: {},
+103 silly install resolved     _shasum: '0f7eb8c30965ec08c72accfa0130c8b79984141d',
+103 silly install resolved     _from: 'debug@2.6.3',
+103 silly install resolved     _npmVersion: '3.10.9',
+103 silly install resolved     _nodeVersion: '6.9.2',
+103 silly install resolved     _npmUser: { name: 'thebigredgeek', email: 'rhyneandrew@gmail.com' },
+103 silly install resolved     dist:
+103 silly install resolved      { shasum: '0f7eb8c30965ec08c72accfa0130c8b79984141d',
+103 silly install resolved        tarball: 'https://registry.npmjs.org/debug/-/debug-2.6.3.tgz' },
+103 silly install resolved     maintainers: [ [Object] ],
+103 silly install resolved     _npmOperationalInternal:
+103 silly install resolved      { host: 'packages-12-west.internal.npmjs.com',
+103 silly install resolved        tmp: 'tmp/debug-2.6.3.tgz_1489463433800_0.9440390267409384' },
+103 silly install resolved     directories: {},
+103 silly install resolved     _resolved: 'https://registry.npmjs.org/debug/-/debug-2.6.3.tgz',
+103 silly install resolved     readme: 'ERROR: No README data found!' } ]
+104 info install debug@2.6.3 into /usr/local/lg/node_test/node_modules/@sap/hana-client
+105 info installOne debug@2.6.3
+106 verbose installOne of debug to /usr/local/lg/node_test/node_modules/@sap/hana-client not in flight; installing
+107 verbose correctMkdir /root/.npm/_locks correctMkdir not in flight; initializing
+108 verbose lock using /root/.npm/_locks/debug-29db26935c071055.lock for /usr/local/lg/node_test/node_modules/@sap/hana-client/node_modules/debug
+109 silly install write writing debug 2.6.3 to /usr/local/lg/node_test/node_modules/@sap/hana-client/node_modules/debug
+110 verbose unbuild node_modules/@sap/hana-client/node_modules/debug
+111 silly gentlyRm /usr/local/lg/node_test/node_modules/@sap/hana-client/node_modules/debug is being purged from base /usr/local/lg/node_test
+112 verbose gentlyRm don't care about contents; nuking /usr/local/lg/node_test/node_modules/@sap/hana-client/node_modules/debug
+113 verbose tar unpack /root/.npm/debug/2.6.3/package.tgz
+114 verbose tar unpacking to /usr/local/lg/node_test/node_modules/@sap/hana-client/node_modules/debug
+115 silly gentlyRm /usr/local/lg/node_test/node_modules/@sap/hana-client/node_modules/debug is being purged
+116 verbose gentlyRm don't care about contents; nuking /usr/local/lg/node_test/node_modules/@sap/hana-client/node_modules/debug
+117 silly gunzTarPerm modes [ '755', '644' ]
+118 silly gunzTarPerm extractEntry package.json
+119 silly gunzTarPerm extractEntry .npmignore
+120 silly gunzTarPerm extractEntry README.md
+121 silly gunzTarPerm extractEntry LICENSE
+122 silly gunzTarPerm extractEntry karma.conf.js
+123 silly gunzTarPerm extractEntry node.js
+124 silly gunzTarPerm extractEntry component.json
+125 silly gunzTarPerm extractEntry Makefile
+126 silly gunzTarPerm extractEntry .coveralls.yml
+127 silly gunzTarPerm extractEntry bower.json
+128 silly gunzTarPerm extractEntry .eslintrc
+129 silly gunzTarPerm extractEntry .travis.yml
+130 silly gunzTarPerm extractEntry CHANGELOG.md
+131 silly gunzTarPerm extractEntry src/browser.js
+132 silly gunzTarPerm extractEntry src/debug.js
+133 silly gunzTarPerm extractEntry src/index.js
+134 silly gunzTarPerm extractEntry src/node.js
+135 verbose write writing to /usr/local/lg/node_test/node_modules/@sap/hana-client/node_modules/debug/package.json
+136 info preinstall debug@2.6.3
+137 verbose readDependencies loading dependencies from /usr/local/lg/node_test/node_modules/@sap/hana-client/node_modules/debug/package.json
+138 silly prepareForInstallMany adding ms@0.7.2 from debug dependencies
+139 verbose readDependencies loading dependencies from /usr/local/lg/node_test/node_modules/@sap/hana-client/node_modules/debug/package.json
+140 silly cache add args [ 'ms@0.7.2', null ]
+141 verbose cache add spec ms@0.7.2
+142 silly cache add parsed spec Result {
+142 silly cache add   raw: 'ms@0.7.2',
+142 silly cache add   scope: null,
+142 silly cache add   name: 'ms',
+142 silly cache add   rawSpec: '0.7.2',
+142 silly cache add   spec: '0.7.2',
+142 silly cache add   type: 'version' }
+143 silly addNamed ms@0.7.2
+144 verbose addNamed "0.7.2" is a plain semver version for ms
+145 silly mapToRegistry name ms
+146 silly mapToRegistry using default registry
+147 silly mapToRegistry registry https://registry.npmjs.org/
+148 silly mapToRegistry data Result {
+148 silly mapToRegistry   raw: 'ms',
+148 silly mapToRegistry   scope: null,
+148 silly mapToRegistry   name: 'ms',
+148 silly mapToRegistry   rawSpec: '',
+148 silly mapToRegistry   spec: 'latest',
+148 silly mapToRegistry   type: 'tag' }
+149 silly mapToRegistry uri https://registry.npmjs.org/ms
+150 verbose addNameVersion registry:https://registry.npmjs.org/ms not in flight; fetching
+151 verbose request uri https://registry.npmjs.org/ms
+152 verbose request no auth needed
+153 info attempt registry request try #1 at 3:06:00 PM
+154 verbose etag W/"59df2de6-3c9a"
+155 verbose lastModified Thu, 12 Oct 2017 08:55:02 GMT
+156 http request GET https://registry.npmjs.org/ms
+157 http 304 https://registry.npmjs.org/ms
+158 verbose headers { date: 'Tue, 24 Oct 2017 15:06:00 GMT',
+158 verbose headers   via: '1.1 varnish',
+158 verbose headers   'cache-control': 'max-age=300',
+158 verbose headers   etag: 'W/"59df2de6-3c9a"',
+158 verbose headers   age: '133',
+158 verbose headers   connection: 'keep-alive',
+158 verbose headers   'x-served-by': 'cache-iad2641-IAD',
+158 verbose headers   'x-cache': 'HIT',
+158 verbose headers   'x-cache-hits': '9',
+158 verbose headers   'x-timer': 'S1508857560.014496,VS0,VE0',
+158 verbose headers   vary: 'Accept-Encoding, Accept' }
+159 silly get cb [ 304,
+159 silly get   { date: 'Tue, 24 Oct 2017 15:06:00 GMT',
+159 silly get     via: '1.1 varnish',
+159 silly get     'cache-control': 'max-age=300',
+159 silly get     etag: 'W/"59df2de6-3c9a"',
+159 silly get     age: '133',
+159 silly get     connection: 'keep-alive',
+159 silly get     'x-served-by': 'cache-iad2641-IAD',
+159 silly get     'x-cache': 'HIT',
+159 silly get     'x-cache-hits': '9',
+159 silly get     'x-timer': 'S1508857560.014496,VS0,VE0',
+159 silly get     vary: 'Accept-Encoding, Accept' } ]
+160 verbose etag https://registry.npmjs.org/ms from cache
+161 verbose get saving ms to /root/.npm/registry.npmjs.org/ms/.cache.json
+162 verbose correctMkdir /root/.npm correctMkdir not in flight; initializing
+163 silly cache afterAdd ms@0.7.2
+164 verbose afterAdd /root/.npm/ms/0.7.2/package/package.json not in flight; writing
+165 verbose correctMkdir /root/.npm correctMkdir not in flight; initializing
+166 verbose afterAdd /root/.npm/ms/0.7.2/package/package.json written
+167 silly install resolved [ { name: 'ms',
+167 silly install resolved     version: '0.7.2',
+167 silly install resolved     description: 'Tiny milisecond conversion utility',
+167 silly install resolved     repository: { type: 'git', url: 'git+https://github.com/zeit/ms.git' },
+167 silly install resolved     main: './index',
+167 silly install resolved     files: [ 'index.js' ],
+167 silly install resolved     scripts:
+167 silly install resolved      { test: 'xo && mocha test/index.js',
+167 silly install resolved        'test-browser': 'serve ./test' },
+167 silly install resolved     license: 'MIT',
+167 silly install resolved     devDependencies:
+167 silly install resolved      { 'expect.js': '^0.3.1',
+167 silly install resolved        mocha: '^3.0.2',
+167 silly install resolved        serve: '^1.4.0',
+167 silly install resolved        xo: '^0.17.0' },
+167 silly install resolved     component: { scripts: [Object] },
+167 silly install resolved     xo: { space: true, semicolon: false, envs: [Object], rules: [Object] },
+167 silly install resolved     gitHead: 'ac92a7e0790ba2622a74d9d60690ca0d2c070a45',
+167 silly install resolved     bugs: { url: 'https://github.com/zeit/ms/issues' },
+167 silly install resolved     homepage: 'https://github.com/zeit/ms#readme',
+167 silly install resolved     _id: 'ms@0.7.2',
+167 silly install resolved     _shasum: 'ae25cf2512b3885a1d95d7f037868d8431124765',
+167 silly install resolved     _from: 'ms@0.7.2',
+167 silly install resolved     _npmVersion: '3.10.8',
+167 silly install resolved     _nodeVersion: '6.8.0',
+167 silly install resolved     _npmUser: { name: 'leo', email: 'leo@zeit.co' },
+167 silly install resolved     dist:
+167 silly install resolved      { shasum: 'ae25cf2512b3885a1d95d7f037868d8431124765',
+167 silly install resolved        tarball: 'https://registry.npmjs.org/ms/-/ms-0.7.2.tgz' },
+167 silly install resolved     maintainers: [ [Object], [Object] ],
+167 silly install resolved     _npmOperationalInternal:
+167 silly install resolved      { host: 'packages-18-east.internal.npmjs.com',
+167 silly install resolved        tmp: 'tmp/ms-0.7.2.tgz_1477383407940_0.4743474116548896' },
+167 silly install resolved     directories: {},
+167 silly install resolved     _resolved: 'https://registry.npmjs.org/ms/-/ms-0.7.2.tgz',
+167 silly install resolved     readme: 'ERROR: No README data found!' } ]
+168 info install ms@0.7.2 into /usr/local/lg/node_test/node_modules/@sap/hana-client/node_modules/debug
+169 info installOne ms@0.7.2
+170 verbose installOne of ms to /usr/local/lg/node_test/node_modules/@sap/hana-client/node_modules/debug not in flight; installing
+171 verbose correctMkdir /root/.npm/_locks correctMkdir not in flight; initializing
+172 verbose lock using /root/.npm/_locks/ms-8f29c327e617ae8c.lock for /usr/local/lg/node_test/node_modules/@sap/hana-client/node_modules/debug/node_modules/ms
+173 silly install write writing ms 0.7.2 to /usr/local/lg/node_test/node_modules/@sap/hana-client/node_modules/debug/node_modules/ms
+174 verbose unbuild node_modules/@sap/hana-client/node_modules/debug/node_modules/ms
+175 silly gentlyRm /usr/local/lg/node_test/node_modules/@sap/hana-client/node_modules/debug/node_modules/ms is being purged from base /usr/local/lg/node_test
+176 verbose gentlyRm don't care about contents; nuking /usr/local/lg/node_test/node_modules/@sap/hana-client/node_modules/debug/node_modules/ms
+177 verbose tar unpack /root/.npm/ms/0.7.2/package.tgz
+178 verbose tar unpacking to /usr/local/lg/node_test/node_modules/@sap/hana-client/node_modules/debug/node_modules/ms
+179 silly gentlyRm /usr/local/lg/node_test/node_modules/@sap/hana-client/node_modules/debug/node_modules/ms is being purged
+180 verbose gentlyRm don't care about contents; nuking /usr/local/lg/node_test/node_modules/@sap/hana-client/node_modules/debug/node_modules/ms
+181 silly gunzTarPerm modes [ '755', '644' ]
+182 silly gunzTarPerm extractEntry package.json
+183 silly gunzTarPerm extractEntry README.md
+184 silly gunzTarPerm extractEntry index.js
+185 silly gunzTarPerm extractEntry LICENSE.md
+186 verbose write writing to /usr/local/lg/node_test/node_modules/@sap/hana-client/node_modules/debug/node_modules/ms/package.json
+187 info preinstall ms@0.7.2
+188 verbose readDependencies loading dependencies from /usr/local/lg/node_test/node_modules/@sap/hana-client/node_modules/debug/node_modules/ms/package.json
+189 verbose readDependencies loading dependencies from /usr/local/lg/node_test/node_modules/@sap/hana-client/node_modules/debug/node_modules/ms/package.json
+190 silly install resolved []
+191 verbose about to build /usr/local/lg/node_test/node_modules/@sap/hana-client/node_modules/debug/node_modules/ms
+192 info build /usr/local/lg/node_test/node_modules/@sap/hana-client/node_modules/debug/node_modules/ms
+193 info linkStuff ms@0.7.2
+194 silly linkStuff ms@0.7.2 has /usr/local/lg/node_test/node_modules/@sap/hana-client/node_modules/debug/node_modules as its parent node_modules
+195 verbose linkBins ms@0.7.2
+196 verbose linkMans ms@0.7.2
+197 verbose rebuildBundles ms@0.7.2
+198 info install ms@0.7.2
+199 info postinstall ms@0.7.2
+200 verbose unlock done using /root/.npm/_locks/ms-8f29c327e617ae8c.lock for /usr/local/lg/node_test/node_modules/@sap/hana-client/node_modules/debug/node_modules/ms
+201 verbose about to build /usr/local/lg/node_test/node_modules/@sap/hana-client/node_modules/debug
+202 info build /usr/local/lg/node_test/node_modules/@sap/hana-client/node_modules/debug
+203 info linkStuff debug@2.6.3
+204 silly linkStuff debug@2.6.3 has /usr/local/lg/node_test/node_modules/@sap/hana-client/node_modules as its parent node_modules
+205 verbose linkBins debug@2.6.3
+206 verbose linkMans debug@2.6.3
+207 verbose rebuildBundles debug@2.6.3
+208 verbose rebuildBundles [ 'ms' ]
+209 info install debug@2.6.3
+210 info postinstall debug@2.6.3
+211 verbose unlock done using /root/.npm/_locks/debug-29db26935c071055.lock for /usr/local/lg/node_test/node_modules/@sap/hana-client/node_modules/debug
+212 verbose about to build /usr/local/lg/node_test/node_modules/@sap/hana-client
+213 info build /usr/local/lg/node_test/node_modules/@sap/hana-client
+214 info linkStuff @sap/hana-client@2.2.26
+215 silly linkStuff @sap/hana-client@2.2.26 has /usr/local/lg/node_test/node_modules as its parent node_modules
+216 verbose linkBins @sap/hana-client@2.2.26
+217 verbose linkMans @sap/hana-client@2.2.26
+218 verbose rebuildBundles @sap/hana-client@2.2.26
+219 verbose rebuildBundles [ 'debug' ]
+220 info install @sap/hana-client@2.2.26
+221 verbose unsafe-perm in lifecycle false
+222 info @sap/hana-client@2.2.26 Failed to exec install script
+223 verbose unlock done using /root/.npm/_locks/sap-hana-client-1563e22f9ea7129d.lock for /usr/local/lg/node_test/node_modules/@sap/hana-client
+224 verbose stack Error: @sap/hana-client@2.2.26 install: `node build.js`
+224 verbose stack Exit status 255
+224 verbose stack     at EventEmitter.<anonymous> (/hana/shared/LT1/xs/node_4/lib/node_modules/npm/lib/utils/lifecycle.js:217:16)
+224 verbose stack     at emitTwo (events.js:87:13)
+224 verbose stack     at EventEmitter.emit (events.js:172:7)
+224 verbose stack     at ChildProcess.<anonymous> (/hana/shared/LT1/xs/node_4/lib/node_modules/npm/lib/utils/spawn.js:24:14)
+224 verbose stack     at emitTwo (events.js:87:13)
+224 verbose stack     at ChildProcess.emit (events.js:172:7)
+224 verbose stack     at maybeClose (internal/child_process.js:862:16)
+224 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:222:5)
+225 verbose pkgid @sap/hana-client@2.2.26
+226 verbose cwd /usr/local/lg/node_test
+227 error Linux 3.12.74-60.64.40-default
+228 error argv "/hana/shared/LT1/xs/node_4/bin/node" "/hana/shared/LT1/xs/node_4/lib/node_modules/npm/bin/npm-cli.js" "instal" "/hana/shared/LT1/hdbclient/node/"
+229 error node v4.8.4
+230 error npm  v2.15.11
+231 error code ELIFECYCLE
+232 error @sap/hana-client@2.2.26 install: `node build.js`
+232 error Exit status 255
+233 error Failed at the @sap/hana-client@2.2.26 install script 'node build.js'.
+233 error This is most likely a problem with the @sap/hana-client package,
+233 error not with npm itself.
+233 error Tell the author that this fails on your system:
+233 error     node build.js
+233 error You can get information on how to open an issue for this project with:
+233 error     npm bugs @sap/hana-client
+233 error Or if that isn't available, you can get their info via:
+233 error
+233 error     npm owner ls @sap/hana-client
+233 error There is likely additional logging output above.
+234 verbose exit [ 1, true ]
+235 verbose unbuild node_modules/@sap/hana-client
+236 info preuninstall @sap/hana-client@2.2.26
+237 info uninstall @sap/hana-client@2.2.26
+238 verbose unbuild rmStuff @sap/hana-client@2.2.26 from /usr/local/lg/node_test/node_modules
+239 verbose unbuild rmStuff in /usr/local/lg/node_test/node_modules/@sap
+240 info postuninstall @sap/hana-client@2.2.26
+241 silly gentlyRm /usr/local/lg/node_test/node_modules/@sap/hana-client is being purged from base /usr/local/lg/node_test
+242 verbose gentlyRm don't care about contents; nuking /usr/local/lg/node_test/node_modules/@sap/hana-client
+243 silly vacuum-fs purging /usr/local/lg/node_test/node_modules/@sap/hana-client
+244 silly vacuum-fs removing /usr/local/lg/node_test/node_modules/@sap
+245 silly vacuum-fs removing /usr/local/lg/node_test/node_modules
+246 silly vacuum-fs finished vacuuming up to /usr/local/lg/node_test
